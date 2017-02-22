@@ -23,7 +23,17 @@
                  :components ((:file       "package")
                               (:file       "types")
                               (:file       "protocol")
-                              (:file       "mixins"))))
+                              (:file       "mixins")))
+
+                (:module     "report"
+                 :pathname   "src/report"
+                 :depends-on ("model")
+                 :serial     t
+                 :components ((:file       "package")
+                              (:file       "protocol")
+
+                              (:file       "default")
+                              (:file       "simple"))))
 
   :components  ((:static-file "COPYING")
                 (:static-file "README.org"))
