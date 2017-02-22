@@ -16,7 +16,9 @@
                 (:version :let-plus                      "0.2")
                 (:version :more-conditions               "0.4")
                 (:version :utilities.print-items         "0.1")
-                (:version :architecture.service-provider "0.1"))
+                (:version :architecture.service-provider "0.1")
+
+                :user-interface.progress)
 
   :components  ((:module     "model"
                  :pathname   "src/model"
@@ -24,6 +26,11 @@
                               (:file       "types")
                               (:file       "protocol")
                               (:file       "mixins")))
+
+                (:module     "progress" ; TODO where to put this?
+                 :pathname   "src/progress"
+                 :depends-on ("model")
+                 :components ((:file       "fiveam")))
 
                 (:module     "report"
                  :pathname   "src/report"
