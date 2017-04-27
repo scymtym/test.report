@@ -12,7 +12,18 @@
   :maintainer  "Jan Moringen <jmoringe@techfak.uni-bielefeld.de>"
 
   :version     (:read-file-form "version-string.sexp")
-  :depends-on  ()
+  :depends-on  (:alexandria
+                (:version :let-plus                      "0.2")
+                (:version :more-conditions               "0.4")
+                (:version :utilities.print-items         "0.1")
+                (:version :architecture.service-provider "0.1"))
+
+  :components  ((:module     "model"
+                 :pathname   "src/model"
+                 :components ((:file       "package")
+                              (:file       "types")
+                              (:file       "protocol")
+                              (:file       "mixins"))))
 
   :components  ((:static-file "COPYING")
                 (:static-file "README.org"))
@@ -30,4 +41,10 @@
   :depends-on  ((:version :test.report (:read-file-form "version-string.sexp"))
                 (:version :fiveam      "1.3"))
 
-  :components  ())
+  :components  ((:module     "test"
+                 :serial     t
+                 :components ((:file       "package")))))
+
+(defmethod perform ((operation test-op)
+                    (component (eql (find-system :test.report/test))))
+  (uiop:symbol-call '#:test.report.test '#:run-tests))
