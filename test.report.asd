@@ -33,7 +33,8 @@
                               (:file       "protocol")
 
                               (:file       "default")
-                              (:file       "simple"))))
+                              (:file       "simple")
+                              (:file       "test-anything-protocol"))))
 
   :components  ((:static-file "COPYING")
                 (:static-file "README.org"))
