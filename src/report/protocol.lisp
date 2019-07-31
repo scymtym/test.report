@@ -28,7 +28,7 @@
   (with-open-file (stream target :direction         :output
                                  :if-does-not-exist :create
                                  :if-exists         :supersede)
-    (report result style target)))
+    (report result style stream)))
 
 (defmethod report ((result t) (style t) (target t))
   (report-using-kind (model:kind result) result style target))
