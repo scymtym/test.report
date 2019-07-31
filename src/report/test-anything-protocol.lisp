@@ -1,19 +1,19 @@
 ;;;; test-anything-protocol.lisp --- TODO.
 ;;;;
-;;;; Copyright (C) 2013, 2016, 2017 Jan Moringen
+;;;; Copyright (C) 2013-2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
 ;;;; Based on https://testanything.org/
 
-(cl:in-package #:test.report)
+(cl:in-package #:test.report.report)
 
 (defclass tap ()
-  ((version :initarg  :version
-            :type     positive-integer
-            :reader   style-version
-            :documentation
-            ""))
+  ((%version :initarg  :version
+             :type     positive-integer
+             :reader   version
+             :documentation
+             ""))
   (:default-initargs
    :version 12)
   (:documentation
@@ -30,9 +30,9 @@
                               (target stream))
   (fresh-line target)
   (pprint-logical-block (target nil)
-    (let+ (((&structure-r/o style- version) style)
-           ((&structure-r/o result- descendants) result)
-          (total         (length (remove-if #'result-children descendants)))
+    (let+ (((&accessors-r/o version) style)
+           ((&accessors-r/o (descendants model:descendants)) result)
+          (total         (length (remove-if #'model:children descendants)))
           (*case-number* 0))
       (unless (zerop total)
         (format target "TAP version ~D~:@_1..~D" version total)
@@ -43,21 +43,21 @@
                               (result t)
                               (style  tap)
                               (target stream))
-  (let+ (((&structure-r/o result- name descendants) result)
+  (let+ (((&accessors-r/o (name model:name) (descendants model:descendants)) result)
          (cases      (remove :case (remove result descendants) ; TODO :include-self?
-                             :key      #'result-kind
+                             :key      #'model:kind
                              :test-not #'eq))
          (assertions (remove :case (remove result descendants)
-                             :key #'result-kind)))
+                             :key #'model:kind)))
     (dolist (assertion assertions)
-      (let ((status (result-status assertion))
+      (let ((status (model:status assertion))
             (number (incf *case-number*)))
         (format target "~0I~:@_~A ~A~@[ - ~A~]~@[ # skip~]"
                 (case status
                   (:passed "ok")
                   (t       "not ok"))
                 number
-                (result-description result)
+                (model:description result)
                 (case status
                   (:skipped )))
         (case status
@@ -66,8 +66,8 @@
            (pprint-newline :mandatory target)
            (pprint-logical-block (target nil :per-line-prefix "#  ")
              (format target "Suite: ~{~S~^ -> ~}"
-                     (mapcar #'result-name
-                             (butlast (reverse (result-ancestors result)))))
+                     (mapcar #'model:name
+                             (butlast (reverse (model:ancestors result)))))
              (format target "~:@_Test: ~S~:@_~:W~:@_" name assertion))))))
     #+no (mapc (rcurry #'report style target) cases)))
 

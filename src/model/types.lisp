@@ -1,10 +1,10 @@
 ;;;; types.lisp --- Types used in the model module.
 ;;;;
-;;;; Copyright (C) 2013, 2017 Jan Moringen
+;;;; Copyright (C) 2013-2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
-(cl:in-package #:test.result.model)
+(cl:in-package #:test.report.model)
 
 (deftype kind ()
   "TODO"

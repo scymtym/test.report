@@ -1,44 +1,44 @@
 ;;;; protocol.lisp --- Protocol provided by the model module.
 ;;;;
-;;;; Copyright (C) 2013, 2017 Jan Moringen
+;;;; Copyright (C) 2013-2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
-(cl:in-package #:test.result.model)
+(cl:in-package #:test.report.model)
 
 ;;; Result protocol
 
-(defgeneric result-kind (result)
+(defgeneric kind (result)
   (:documentation
    "TODO(jmoringe): document"))
 
-(defgeneric result-name (result)
+(defgeneric name (result)
   (:documentation
    "TODO(jmoringe): document"))
 
-(defgeneric result-status (result)
+(defgeneric status (result)
   (:documentation
    "TODO(jmoringe): document"))
 
-(defgeneric result-description (result)
+(defgeneric description (result)
   (:documentation
    "TODO(jmoringe): document"))
 
 ;;; Result hierarchy protocol
 
-(defgeneric result-parent (result)
+(defgeneric parent (result)
   (:documentation
    "TODO(jmoringe): document"))
 
-(defgeneric result-ancestors (result)
+(defgeneric ancestors (result)
   (:documentation
    "TODO(jmoringe): document"))
 
-(defgeneric result-children (result)
+(defgeneric children (result)
   (:documentation
    "TODO(jmoringe): document"))
 
-(defgeneric result-descendants (result) ; TODO &key include-self?
+(defgeneric descendants (result) ; TODO &key include-self?
   (:documentation
    "TODO(jmoringe): document"))
 
@@ -52,24 +52,24 @@
 
 ;; Default behavior
 
-(defmethod result-parent ((result t))
+(defmethod parent ((result t))
   nil)
 
-(defmethod result-ancestors ((result t))
-  (list* result (when-let ((parent (result-parent result)))
-                  (result-ancestors parent))))
+(defmethod ancestors ((result t))
+  (list* result (when-let ((parent (parent result)))
+                  (ancestors parent))))
 
-(defmethod result-children ((result t))
+(defmethod children ((result t))
   '())
 
-(defmethod result-descendants ((result t)) ; TODO &key include-self?
-  (list* result (mappend #'result-descendants (result-children result))))
+(defmethod descendants ((result t)) ; TODO &key include-self?
+  (list* result (mappend #'descendants (children result))))
 
 (defmethod count-status ((status t) (result t))
-  (if (eq (result-status result) status) 1 0))
+  (if (eq (status result) status) 1 0))
 
 ;;;
 
 (defun has-status (status &rest more-statuses)
   (lambda (test)
-    (member (result-status test) (list* status more-statuses))))
+    (member (status test) (list* status more-statuses))))

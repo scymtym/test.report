@@ -1,19 +1,20 @@
 ;;;; package.lisp --- Package definition for the report module.
 ;;;;
-;;;; Copyright (C) 2013 Jan Moringen
+;;;; Copyright (C) 2013-2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
-(cl:defpackage #:test.report
+(cl:defpackage #:test.report.report
   (:use
    #:cl
    #:alexandria
    #:let-plus
    #:more-conditions
 
-   #:service-provider
+   #:service-provider)
 
-   #:test.model)
+  (:local-nicknames
+   (#:model #:test.report.model))
 
   ;; Report protocol
   (:export
@@ -21,5 +22,5 @@
    #:report-using-kind)
 
   (:documentation
-   "This package contains protocols and implementations for generating
-    reports for unit test results."))
+   "Protocols and implementations for generating reports for unit test
+    results."))

@@ -1,6 +1,6 @@
 ;;;; package.lisp --- Package definition for the model module.
 ;;;;
-;;;; Copyright (C) 2013, 2017 Jan Moringen
+;;;; Copyright (C) 2013-2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
@@ -20,17 +20,17 @@
 
   ;; Result protocol
   (:export
-   #:result-kind
-   #:result-name
-   #:result-status
-   #:result-description)
+   #:kind
+   #:name
+   #:status
+   #:description)
 
   ;; Result hierarchy protocol
   (:export
-   #:result-parent
-   #:result-ancestors
-   #:result-children
-   #:result-descendants
+   #:parent
+   #:ancestors
+   #:children
+   #:descendants
    #:count-status)
 
   (:documentation

@@ -1,6 +1,6 @@
 ;;;; fiveam.lisp --- Adapter for the fiveam framework.
 ;;;;
-;;;; Copyright (C) 2013, 2014, 2017 Jan Moringen
+;;;; Copyright (C) 2013, 2014, 2017, 2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
@@ -10,12 +10,8 @@
    #:alexandria
    #:let-plus)
 
-  (:import-from #:test.report.model
-   #:result-name
-   #:result-status
-   #:result-description
-
-   #:assertion-result)
+  (:local-nicknames
+   (#:model #:test.report.model))
 
   (:export
    #:import-results))
@@ -26,31 +22,31 @@
 ;;;
 ;;; This is needed to make the hierarchy functions work.
 
-(defclass 5am-wrapper (test.model::assertion-result)
-  ((assertion :initarg  :assertion
-              :reader   result-assertion
-              :documentation
-              "Stores the wrapped assertion result."))
+(defclass 5am-wrapper (model::assertion-result)
+  ((%assertion :initarg  :assertion
+               :reader   assertion
+               :documentation
+               "Stores the wrapped assertion result."))
   (:documentation
    "Wraps fiveam results to make the hierarchy work."))
 
-(defmethod result-name ((result 5am-wrapper))
-  (5am::name (5am::test-case (result-assertion result))))
+(defmethod model:name ((result 5am-wrapper))
+  (5am::name (5am::test-case (assertion result))))
 
-(defmethod result-status ((result 5am-wrapper))
-  (result-status (result-assertion result)))
+(defmethod model:status ((result 5am-wrapper))
+  (model:status (assertion result)))
 
-(defmethod result-status ((result 5am::test-passed))
+(defmethod model:status ((result 5am::test-passed))
   :passed)
 
-(defmethod result-status ((result 5am::test-skipped))
+(defmethod model:status ((result 5am::test-skipped))
   :skipped)
 
-(defmethod result-status ((result 5am::test-failure))
+(defmethod model:status ((result 5am::test-failure))
   :failure)
 
-(defmethod result-description ((result 5am-wrapper))
-  (5am::reason (result-assertion result)))
+(defmethod model:description ((result 5am-wrapper))
+  (5am::reason (assertion result)))
 
 ;;; Import
 
@@ -62,14 +58,14 @@
          ((&flet add-case (original parent)
             (ensure-gethash
              original original->result
-             (let ((case-result (make-instance 'test.model::test-case-result
+             (let ((case-result (make-instance 'model::test-case-result
                                                :name   (5am::name original)
                                                :parent parent)))
-               (appendf (test.model::result-%children parent)
+               (appendf (model::%children parent)
                         (list case-result))
                case-result))))
          ((&labels walk-suites (suite &optional parent)
-            (let ((suite-result (apply #'make-instance 'test.model::test-suite-result
+            (let ((suite-result (apply #'make-instance 'model::test-suite-result
                                        :name (5am::name suite)
                                        (when parent
                                          (list :parent parent)))))
@@ -87,7 +83,7 @@
       (map nil (lambda (result)
                  (let* ((case        (5am::test-case result))
                         (case-result (gethash case original->result)))
-                   (appendf (test.model::result-%children case-result)
+                   (appendf (model::%children case-result)
                             (list (make-instance '5am-wrapper
                                                  :assertion result
                                                  :parent    case-result)))))

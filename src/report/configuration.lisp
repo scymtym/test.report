@@ -1,10 +1,10 @@
 ;;;; configuration.lisp --- Configuration of reporting styles.
 ;;;;
-;;;; Copyright (C) 2013, 2016 Jan Moringen
+;;;; Copyright (C) 2013, 2016, 2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
-(cl:in-package #:test.report)
+(cl:in-package #:test.report.report)
 
 (configuration.options:define-schema *default-schema*
   ("verbose-failures" :type 'boolean :default t))

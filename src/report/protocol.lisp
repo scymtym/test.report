@@ -1,10 +1,10 @@
 ;;;; protocol.lisp --- Protocol provided by the test.report system.
 ;;;;
-;;;; Copyright (C) 2013, 2017 Jan Moringen
+;;;; Copyright (C) 2013-2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
-(cl:in-package #:test.report)
+(cl:in-package #:test.report.report)
 
 ;;; Test result report protocol
 
@@ -16,7 +16,7 @@
   (:documentation
    "TODO(jmoringe): document"))
 
-;; Default behavior
+;;; Default behavior
 
 (defmethod report ((result t) (style symbol) (target t))
   (report result (list style) target))
@@ -31,7 +31,7 @@
     (report result style target)))
 
 (defmethod report ((result t) (style t) (target t))
-  (report-using-kind (result-kind result) result style target))
+  (report-using-kind (model:kind result) result style target))
 
 ;;; Test result report style service
 

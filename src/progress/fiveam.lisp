@@ -4,7 +4,7 @@
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
-(cl:in-package #:test.progress)
+(cl:in-package #:test.result.progress)
 
 (defvar *suite-progress?* nil)
 
