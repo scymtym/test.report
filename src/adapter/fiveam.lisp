@@ -14,7 +14,10 @@
    (#:model #:test.report.model))
 
   (:export
-   #:import-results))
+   #:import-results)
+
+  (:export
+   #:hook-into-run))
 
 (cl:in-package #:test.report.adapter.fiveam)
 
@@ -89,3 +92,18 @@
                                                  :parent    case-result)))))
            results)
       suite-result)))
+
+;;;
+
+(defun hook-into-run ()
+  (sb-int:encapsulate
+   'fiveam:run 'test-report
+   (lambda (function test-spec &rest args)
+     (let* ((target      (make-pathname :name (format nil "test-results-~(~A~)"
+                                                 (string test-spec))
+                                   :type "xml"))
+            (suite       (fiveam:get-test test-spec))
+            (raw-results (apply function test-spec args))
+            (results     (import-results raw-results :suite suite)))
+       (test.report.report:report results :junit target)
+       raw-results))))
