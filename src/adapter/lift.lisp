@@ -1,10 +1,22 @@
 ;;;; lift.lisp --- Result adapter for the lift framework.
 ;;;;
-;;;; Copyright (C) 2013, 2016 Jan Moringen
+;;;; Copyright (C) 2013, 2016, 2019 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
-(cl:in-package #:test.report) ; TODO .lift
+(cl:defpackage #:test.report.adapter.lift
+  (:use
+   #:cl
+   #:alexandria
+   #:let-plus)
+
+  (:local-nicknames
+   (#:model #:test.report.model))
+
+  (:export
+   #:import-results))
+
+(cl:in-package #:test.report.adapter.lift)
 
 (defun handle-lift-case (name parent tests)
   (let ((case (make-instance 'lift-suite-result-wrapper
@@ -28,15 +40,15 @@
 
 ;;; test suite
 
-(defclass lift-suite-result-wrapper (test.model::test-suite-result)
+(defclass lift-suite-result-wrapper (model::test-suite-result)
   ()
   (:documentation
    "TODO(jmoringe): document"))
 
 ;;; test case
 
-(defclass lift-case-result-wrapper (test.model::kind-mixin
-                                    test.model::parented-mixin
+(defclass lift-case-result-wrapper (model::kind-mixin
+                                    model::parented-mixin
                                     print-items:print-items-mixin)
   ((data :initarg  :data
          :type     list
@@ -80,4 +92,3 @@
 
 (defmethod result-name ((result lift::test-problem-mixin))
   :assertion)
-
