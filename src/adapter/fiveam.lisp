@@ -72,13 +72,21 @@
                                        :name (5am::name suite)
                                        (when parent
                                          (list :parent parent)))))
-              (map nil (compose
-                        (lambda (child)
-                          (if (typep child '5am::test-suite)
-                              (walk-suites child suite-result)
-                              (add-case child suite-result)))
-                        #'5am:get-test)
-                   (hash-table-values (5am::tests suite)))
+              (when parent
+                (appendf (model::%children parent) (list suite-result)))
+              (alexandria:maphash-values
+               (named-lambda process-child (child)
+                 (typecase child
+                   (symbol
+                    (if-let ((resolved (5am:get-test child)))
+                      (process-child resolved)
+                      (warn "~@<Could not resolve child ~A of ~A.~@:>"
+                            child suite)))
+                   (5am::test-suite
+                    (walk-suites child suite-result))
+                   (t
+                    (add-case child suite-result))))
+               (5am::tests suite))
               suite-result))))
     (let ((suite-result (if suite
                             (walk-suites suite)
