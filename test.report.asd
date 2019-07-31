@@ -17,7 +17,8 @@
                 (:version "utilities.print-items"         "0.1")
                 (:version "architecture.service-provider" "0.1")
 
-                "user-interface.progress")
+                ; "user-interface.progress"
+                )
 
   :components  ((:module     "model"
                  :pathname   "src/model"
