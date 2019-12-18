@@ -104,14 +104,25 @@
 ;;;
 
 (defun hook-into-run ()
-  (sb-int:encapsulate
-   'fiveam:run 'test-report
-   (lambda (function test-spec &rest args)
-     (let* ((target      (make-pathname :name (format nil "test-results-~(~A~)"
-                                                 (string test-spec))
-                                   :type "xml"))
-            (suite       (fiveam:get-test test-spec))
-            (raw-results (apply function test-spec args))
-            (results     (import-results raw-results :suite suite)))
-       (test.report.report:report results :junit target)
-       raw-results))))
+  #+sbcl (sb-int:encapsulate
+          'fiveam:run 'test-report
+          (lambda (function test-spec &rest args)
+            (let* ((target      (make-pathname :name (format nil "test-results-~(~A~)"
+                                                             (string test-spec))
+                                               :type "xml"))
+                   (suite       (fiveam:get-test test-spec))
+                   (raw-results (apply function test-spec args))
+                   (results     (import-results raw-results :suite suite)))
+              (test.report.report:report results :junit target)
+              raw-results)))
+  #+ccl (ccl:advise fiveam:run
+                    (destructuring-bind (test-spec &rest args) ccl:arglist
+                      (let* ((target      (make-pathname :name (format nil "test-results-~(~A~)"
+                                                                       (string test-spec))
+                                                         :type "xml"))
+                             (suite       (fiveam:get-test test-spec))
+                             (raw-results (:do-it))
+                             (results     (import-results raw-results :suite suite)))
+                        (test.report.report:report results :junit target)
+                        raw-results))
+                    :when :around))
