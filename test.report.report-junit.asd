@@ -1,11 +1,11 @@
-;;;; test.report.report-junit.asd --- System definition for test.report.
+;;;; test.report.report-junit.asd --- System definition for test.report.report-junit.
 ;;;;
-;;;; Copyright (C) 2010-2019 Jan Moringen
+;;;; Copyright (C) 2010-2022 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
 (defsystem "test.report.report-junit"
-  :description "TODO"
+  :description "Write test report in JUnit format"
   :license     "GPLv3" ; see COPYING file for details
   :author      "Jan Moringen <jmoringe@techfak.uni-bielefeld.de>"
   :maintainer  "Jan Moringen <jmoringe@techfak.uni-bielefeld.de>"

@@ -5,7 +5,7 @@
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
 (defsystem "test.report.adapter-fiveam"
-  :description "TODO"
+  :description "Adapter for reporting results of fiveam tests."
   :license     "GPLv3" ; see COPYING file for details
   :author      "Jan Moringen <jmoringe@techfak.uni-bielefeld.de>"
   :maintainer  "Jan Moringen <jmoringe@techfak.uni-bielefeld.de>"
