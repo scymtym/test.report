@@ -14,7 +14,7 @@
   :depends-on  ("alexandria"
                 (:version "let-plus"                      "0.2")
                 (:version "more-conditions"               "0.4")
-                (:version "utilities.print-items"         "0.1")
+                (:version "utilities.print-items"         "0.3")
                 (:version "architecture.service-provider" "0.1")
 
                 (:version "fiveam"                        "1.4")

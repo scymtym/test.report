@@ -1,6 +1,6 @@
 ;;;; lift.lisp --- Result adapter for the lift framework.
 ;;;;
-;;;; Copyright (C) 2013, 2016, 2019 Jan Moringen
+;;;; Copyright (C) 2013-2022 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
@@ -61,8 +61,8 @@
    "TODO(jmoringe): document"))
 
 (defmethod print-items:print-items append ((object lift-case-result-wrapper))
-  `((:name   ,(result-name object)   "~A" ((:before :status)))
-    (:status ,(result-status object) " ~A" ((:after :name)))))
+  `(((:name   (:before :status)) "~A" ,(result-name object)  )
+    ((:status (:after :name))    " ~A" ,(result-status object))))
 
 (defmethod result-%plist ((result lift-case-result-wrapper))
   (third (result-%data result)))

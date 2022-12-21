@@ -1,6 +1,6 @@
 ;;;; mixins.lisp --- Mixins used by the model module.
 ;;;;
-;;;; Copyright (C) 2013-2019 Jan Moringen
+;;;; Copyright (C) 2013-2022 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
@@ -32,7 +32,7 @@
    "TODO"))
 
 (defmethod print-items:print-items append ((object named-mixin))
-  `((:name ,(name object) "~A" ((:before :status)))))
+  `(((:name (:before :status)) "~A" ,(name object))))
 
 (defmethod description ((result named-mixin))
   (format nil "~A ~A" (kind result) (name result)))
@@ -65,7 +65,7 @@
    "TODO"))
 
 (defmethod print-items:print-items append ((object status-mixin))
-  `((:status ,(status object) "~A" ((:after :name)))))
+  `(((:status (:after :name)) "~A" ,(status object))))
 
 ;;; `composite-result-mixin'
 
@@ -81,8 +81,8 @@
    "TODO"))
 
 (defmethod print-items:print-items append ((object composite-result-mixin))
-  `((:num-children ,(length (children object)) " (~D)" ((:after :name)))
-    (:status       ,(status object)            " ~A"   ((:after :num-children)))))
+  `(((:num-children (:after :name))         " (~D)" ,(length (children object)))
+    ((:status       (:after :num-children)) " ~A"   ,(status object))))
 
 (defmethod status ((test composite-result-mixin))
   (let ((children (children test)))
