@@ -22,7 +22,7 @@
                 (:version "test.report"                   (:read-file-form "version-string.sexp")))
 
   :components  ((:module     "lift"
-                 :pathname   "src/adapter"
+                 :pathname   "code/adapter"
                  :components ((:file       "lift"))))
 
   :in-order-to ((test-op (test-op "test.report.adapter-lift/test"))))

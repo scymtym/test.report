@@ -1,6 +1,6 @@
 ;;;; test.report.adapter-fiveam.asd --- System definition for test.report.adapter-fiveam.
 ;;;;
-;;;; Copyright (C) 2010-2017, 2019 Jan Moringen
+;;;; Copyright (C) 2010-2022 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
@@ -22,7 +22,7 @@
                 (:version "test.report"                   (:read-file-form "version-string.sexp")))
 
   :components  ((:module     "fiveam"
-                 :pathname   "src/adapter"
+                 :pathname   "code/adapter"
                  :components ((:file       "fiveam"))))
 
   :in-order-to ((test-op (test-op "test.report.adapter-fiveam/test"))))

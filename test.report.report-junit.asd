@@ -22,7 +22,7 @@
                 (:version "test.report"                   (:read-file-form "version-string.sexp")))
 
   :components  ((:module     "report"
-                 :pathname   "src/report"
+                 :pathname   "code/report"
                  :serial     t
                  :components ((:file       "junit"))))
 

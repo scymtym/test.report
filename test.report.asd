@@ -1,6 +1,6 @@
 ;;;; test.report.asd --- System definition for test.report.
 ;;;;
-;;;; Copyright (C) 2010-2019 Jan Moringen
+;;;; Copyright (C) 2010-2022 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
 
@@ -21,7 +21,7 @@
                 )
 
   :components  ((:module     "model"
-                 :pathname   "src/model"
+                 :pathname   "code/model"
                  :serial     t
                  :components ((:file       "package")
                               (:file       "types")
@@ -29,14 +29,14 @@
                               (:file       "mixins")))
 
                 #+no (:module     "progress" ; TODO where to put this?
-                 :pathname   "src/progress"
+                 :pathname   "code/progress"
                  :depends-on ("model")
                  :serial     t
                  :components ((:file       "package")
                               (:file       "fiveam")))
 
                 (:module     "report"
-                 :pathname   "src/report"
+                 :pathname   "code/report"
                  :depends-on ("model")
                  :serial     t
                  :components ((:file       "package")
