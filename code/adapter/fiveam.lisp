@@ -1,6 +1,6 @@
 ;;;; fiveam.lisp --- Adapter for the fiveam framework.
 ;;;;
-;;;; Copyright (C) 2013, 2014, 2017, 2019 Jan Moringen
+;;;; Copyright (C) 2013-2022 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
@@ -86,7 +86,10 @@
                     (walk-suites child suite-result))
                    (t
                     (add-case child suite-result))))
-               (5am::tests suite))
+               (let ((tests (5am::tests suite)))
+                 (if (hash-table-p tests)
+                     tests
+                     (uiop:symbol-call '#:5am '#:%tests tests))))
               suite-result))))
     (let ((suite-result (if suite
                             (walk-suites suite)
