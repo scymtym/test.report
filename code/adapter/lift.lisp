@@ -1,6 +1,6 @@
 ;;;; lift.lisp --- Result adapter for the lift framework.
 ;;;;
-;;;; Copyright (C) 2013-2022 Jan Moringen
+;;;; Copyright (C) 2013-2024 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
@@ -19,24 +19,26 @@
 (cl:in-package #:test.report.adapter.lift)
 
 (defun handle-lift-case (name parent tests)
-  (let ((case (make-instance 'lift-suite-result-wrapper
-                             :name   name
-                             :parent parent
-                             :children '())))
-    (reinitialize-instance case :children (mapcar (lambda (test)
-                                                    (make-instance 'lift-case-result-wrapper :data test :parent case))
-                                                  tests))))
+  (let* ((case     (make-instance 'lift-suite-result-wrapper
+                                  :name   name
+                                  :parent parent))
+         (children (map 'vector (lambda (test)
+                                  (make-instance 'lift-case-result-wrapper
+                                                 :data   test
+                                                 :parent case))
+                        tests)))
+    (reinitialize-instance case :children children)))
 
 (defun handle-lift-result (result)
-  (let ((tests (lift::tests-run result))
-        (root  (make-instance 'lift-suite-result-wrapper
-                              :name :root
-                              :children '())))
-    (reinitialize-instance root :children (mapcar (lambda (name)
-                                                    (handle-lift-case name root (remove name tests
-                                                                                        :key      #'first
-                                                                                        :test-not #'eq)))
-                                                  (lift::suites-run result)))))
+  (let* ((tests    (lift::tests-run result))
+         (root     (make-instance 'lift-suite-result-wrapper :name :root))
+         (children (map 'vector (lambda (name)
+                                  (let ((tests (remove name tests
+                                                       :key      #'first
+                                                       :test-not #'eq)))
+                                    (handle-lift-case name root tests)))
+                        (lift::suites-run result))))
+    (reinitialize-instance root :children children)))
 
 ;;; test suite
 

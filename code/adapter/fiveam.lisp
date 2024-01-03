@@ -1,6 +1,6 @@
 ;;;; fiveam.lisp --- Adapter for the fiveam framework.
 ;;;;
-;;;; Copyright (C) 2013-2022 Jan Moringen
+;;;; Copyright (C) 2013-2022, 2024 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
@@ -64,8 +64,7 @@
              (let ((case-result (make-instance 'model::test-case-result
                                                :name   (5am::name original)
                                                :parent parent)))
-               (appendf (model::%children parent)
-                        (list case-result))
+               (vector-push-extend case-result (model::%children parent))
                case-result))))
          ((&labels walk-suites (suite &optional parent)
             (let ((suite-result (apply #'make-instance 'model::test-suite-result
@@ -73,7 +72,7 @@
                                        (when parent
                                          (list :parent parent)))))
               (when parent
-                (appendf (model::%children parent) (list suite-result)))
+                (vector-push-extend suite-result (model::%children parent)))
               (alexandria:maphash-values
                (named-lambda process-child (child)
                  (typecase child
@@ -97,10 +96,11 @@
       (map nil (lambda (result)
                  (let* ((case        (5am::test-case result))
                         (case-result (gethash case original->result)))
-                   (appendf (model::%children case-result)
-                            (list (make-instance '5am-wrapper
-                                                 :assertion result
-                                                 :parent    case-result)))))
+                   (vector-push-extend
+                    (make-instance '5am-wrapper
+                                   :assertion result
+                                   :parent    case-result)
+                    (model::%children case-result))))
            results)
       suite-result)))
 

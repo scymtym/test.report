@@ -1,6 +1,6 @@
 ;;;; mixins.lisp --- Mixins used by the model module.
 ;;;;
-;;;; Copyright (C) 2013-2022 Jan Moringen
+;;;; Copyright (C) 2013-2022, 2024 Jan Moringen
 ;;;;
 ;;;; Author: Jan Moringen <jmoringe@techfak.uni-bielefeld.DE>
 
@@ -71,10 +71,10 @@
 
 (defclass composite-result-mixin ()
   ((%children :initarg  :children
-              :type     list
+              :type     vector
               :reader   children
               :accessor %children
-              :initform '()
+              :initform (make-array 0 :adjustable t :fill-pointer 0)
               :documentation
               ""))
   (:documentation
